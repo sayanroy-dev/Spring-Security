@@ -19,6 +19,9 @@ import org.springframework.security.crypto.password.DelegatingPasswordEncoder;
 import org.springframework.security.crypto.password.NoOpPasswordEncoder;
 import org.springframework.security.provisioning.InMemoryUserDetailsManager;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+
+import com.example.demo.filter.JwtFilter;
 
 @Configuration
 @EnableWebSecurity
@@ -26,6 +29,9 @@ public class SecurityConfig {
 	
 	@Autowired
 	private UserDetailsService userDetailsService;
+	
+	@Autowired
+	private JwtFilter jwtFilter;
 	
 	@Bean
 	public SecurityFilterChain securityFilterChain(HttpSecurity httpSecurity) throws Exception {
@@ -42,7 +48,8 @@ public class SecurityConfig {
 					//to show the response in postman , for REST APIs
 					.httpBasic(Customizer.withDefaults())
 					//make stateless session
-					.sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS));
+					.sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
+					.addFilterBefore(jwtFilter, UsernamePasswordAuthenticationFilter.class);
 		
 //		Customizer<CsrfConfigurer<HttpSecurity>> custCsrf = new Customizer<CsrfConfigurer<HttpSecurity>>() {
 //			
