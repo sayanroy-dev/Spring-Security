@@ -41,7 +41,7 @@ public class SecurityConfig {
 					.csrf(customizer -> customizer.disable())
 					//authorize any request, but not storing the username and pwd
 					.authorizeHttpRequests(request -> request
-							 .requestMatchers("register","login").permitAll()	// allow public access
+							 .requestMatchers("/register","/login").permitAll()	// allow public access
 							.anyRequest().authenticated())
 					// showing the form login(for BROWSER), but postman will show form in response body
 //					.formLogin(Customizer.withDefaults())

@@ -1,6 +1,6 @@
 package com.example.demo.service;
 
-import java.security.Key;
+
 import java.security.NoSuchAlgorithmException;
 import java.util.Base64;
 import java.util.Date;
@@ -28,6 +28,7 @@ public class JWTService {
 		try {
 			// defines the algo. generates secret key and encode it to string
 			KeyGenerator keyGen = KeyGenerator.getInstance("HmacSHA256");
+			// generates secret Key
 			SecretKey sk = keyGen.generateKey();
 			
 			byte[] skBytes = sk.getEncoded();
@@ -41,15 +42,13 @@ public class JWTService {
 	public String generateToken(String username) {
 		
 		Map<String, Object> claims = new HashMap<>();
-		
-		
 
 		return Jwts.builder()
 				.claims()
 				.add(claims)
 				.subject(username)
 				.issuedAt(new Date(System.currentTimeMillis()))
-				.expiration(new Date(System.currentTimeMillis() + 1000 * 60 * 5))	//5min
+				.expiration(new Date(System.currentTimeMillis() + 1000 * 60 * 25))	//25min
 				.and()
 				.signWith(getKey())
 				.compact();
